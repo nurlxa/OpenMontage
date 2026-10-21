@@ -17,6 +17,10 @@ Fill this in once. Claude reads it before every edit and updates it when Andrea 
 - **Recurring series names** (e.g. "Can You Beat It? Ep. 3"): _TODO_
 - **Things to always / never do** (Andrea's preferences): _TODO_
 
+## Narrator
+
+- **Voice:** _TODO — pick from `voice-samples/` (Kokoro). Default: `am_puck` at speed 1.15_
+
 ## Assets in project files
 
 - SFX: project files `sfx/` (Kenney CC0 + generated basics; see `sfx/README.md`)

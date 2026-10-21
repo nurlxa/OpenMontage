@@ -16,11 +16,12 @@ Checked on 2026-10-21 in the cloud environment Claude runs in. Always re-check w
 | Remotion (alternative animation engine) | `remotion-composer/` | Free | Not installed yet (`npm install` needed). HyperFrames covers our needs. |
 | Sound effects (whoosh, pop, ding, boom) | Project files `sfx/` (Kenney CC0 packs + generated basics) | Free | Ready. See "Sound effects" below. |
 | Background music | Added by Andrea in the TikTok app | Free | Recommended path |
-| AI voiceover (narrator voice) | `tts_selector` → ElevenLabs, OpenAI, Google, etc. | **Paid API key** | Not configured. Optional. |
+| Narrator voice | **Kokoro** (open model, CPU) — see below | Free | Works |
+| Premium AI voiceover | `tts_selector` → ElevenLabs, OpenAI, Google, etc. | **Paid API key** | Not configured. Optional. |
 | AI images / AI video clips | `image_selector`, `video_selector` (FAL, OpenAI, Kling, etc.) | **Paid API key** | Not configured. Not needed for gameplay videos. |
 | AI music | `music_gen` / Suno / ElevenLabs | **Paid API key** | Not configured. Not needed (use TikTok sounds). |
 
-**Bottom line:** the whole style in `style-guide.md` can be done for **$0**. Paid keys only add extras like an AI narrator voice.
+**Bottom line:** the whole style in `style-guide.md` can be done for **$0**. Paid keys only add extras like premium voices or AI-generated visuals.
 
 ## Sound effects
 
@@ -32,16 +33,31 @@ A free library is already in the project files at `sfx/` (see `sfx/README.md` th
 
 Still missing: meme-style sounds (vine boom, bruh, record scratch, crowd "oooh"). If Andrea wants those, download them from a free site and upload them to `sfx/extra/`, and only use ones marked free for commercial use. Most meme sounds come from TV or other videos and are risky.
 
-## Narrator voice (optional)
+## Narrator voice: Kokoro (free, chosen 2026-10-21)
 
-Free open-source voice models (CosyVoice, GPT-SoVITS, Fish Speech, IndexTTS, ChatTTS) can't run in Claude's cloud setup right now. The models download from huggingface.co, which the network blocks, and there's no GPU. Options:
+**Kokoro** (82M-parameter open model, Apache-2.0 license, so commercial use is allowed) runs on CPU in Claude's cloud setup. It makes about 6 seconds of speech in about 2 seconds, with no API key and no cost. It has English (US/UK) voices and Chinese voices (`zf_*`, `zm_*`).
 
-1. **TikTok's built-in text-to-speech** (add it in the app on the text). It's free and kids already know that voice. Easiest.
-2. Andrea's own voice, recorded on the phone and uploaded.
-3. Run an open-source voice model on Andrea's own PC (it needs an NVIDIA graphics card) and upload the audio.
-4. Allow `huggingface.co` in the project's cloud environment network settings so Claude can try a CPU model here. It will be slow, and the voice quality on CPU isn't guaranteed.
+Setup (each new session, takes about a minute):
 
-Check the license before using any model. Some (for example ChatTTS, and Fish Speech's weights) are **non-commercial only**, and promoting your own game counts as commercial use. Never clone a real person's voice without their permission.
+```bash
+mkdir -p ~/kokoro && cd ~/kokoro
+curl -sSLO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+curl -sSLO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+pip install kokoro-onnx soundfile
+```
+
+```python
+from kokoro_onnx import Kokoro; import soundfile as sf
+k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
+samples, sr = k.create("Only one percent can beat this!", voice="am_puck", speed=1.15, lang="en-us")
+sf.write("line.wav", samples, sr)
+```
+
+Then normalize to about -14 LUFS (`ffmpeg -af loudnorm=I=-14:TP=-1`). Write narration at the short-form pace (about 180–200 words per minute; speed 1.1–1.2).
+
+- Samples are in the project files at `voice-samples/`. The voice Andrea picks goes in `channel-info.md`.
+- Kokoro isn't wired into OpenMontage's `tts_selector` yet, so call it as above and save the audio under `projects/<id>/assets/audio/`.
+- Other free options: TikTok's built-in text-to-speech (added in the app), or Andrea's own voice. Check the license on other open models: ChatTTS and Fish Speech weights are non-commercial only. Never clone a real person's voice without their permission.
 
 ## Known limits (be honest about these)
 
