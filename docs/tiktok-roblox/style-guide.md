@@ -59,6 +59,28 @@ Zoom moves to use:
 
 Don't zoom on every cut. Roughly one punch-in per 3–5 seconds keeps it energetic without being tiring.
 
+## 3b. Effects menu (Claude picks these; Andrea doesn't need to)
+
+Everything must stay **smooth** (eased motion, no jerky linear moves) and **land on a sound**: each effect starts on a narration word, an SFX hit, or a game sound.
+
+| Effect | When | Built with |
+|--------|------|-----------|
+| Punch-in / zoom-out snap | Impacts, reveals, punchlines | FFmpeg `zoompan` / HyperFrames GSAP |
+| Orbit / 3D tilt (frame rotates in perspective) | Hook shot, "look at this" moments | HyperFrames (CSS 3D transform + GSAP) |
+| Screen shake | Explosions, falls, bass hits | FFmpeg crop jitter / GSAP |
+| White flash / color flash | Cut transitions, wins | FFmpeg `fade`/overlay |
+| Picture pop-up (game icon, item, emoji, screenshot) | Naming something; "this item…" | HyperFrames image + scale-bounce |
+| Freeze frame + circle/arrow highlight | Pointing at a secret or a mistake | FFmpeg + HyperFrames SVG |
+| Speed ramp / slow-mo | Build-up fast, payoff slow | FFmpeg `setpts` |
+| Glow / motion blur on fast moves | Whips between shots | FFmpeg `tblend` / CSS blur |
+| Progress bar or counter | Challenges, countdowns, "attempt #7" | HyperFrames |
+
+Rules: at most one "big" effect (orbit, flash, shake) every 3–5 seconds. Text pops and SFX can happen more often. Never stack effects so the gameplay becomes hard to see.
+
+**Sync:** effects sync to narration, SFX and game audio. Music added later in the TikTok app **can't** be synced. For a beat-synced edit, Claude has to put the music in the video itself (and then that video won't use a trending TikTok sound). Default: no baked-in music, unless Andrea asks for a beat-synced edit.
+
+**References:** when Andrea shares a TikTok they like, run `skills/meta/video-reference-analyst.md` to break down its effects and timing, then add what works to this menu.
+
 ## 4. On-screen text and captions
 
 Most viewers watch with sound off, so the story must work as text.
