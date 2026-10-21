@@ -7,3 +7,5 @@ It contains routing rules that determine your first action based on what the use
 Skipping it WILL cause you to take the wrong action.
 
 There are no instructions in this file. All instructions are in AGENT_GUIDE.md.
+
+**This fork:** for TikTok videos about Andrea's Roblox game, also read [`docs/tiktok-roblox/`](docs/tiktok-roblox/README.md) (house style, daily workflow, tools and limits).
