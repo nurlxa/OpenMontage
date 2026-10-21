@@ -19,5 +19,5 @@ Fill this in once. Claude reads it before every edit and updates it when Andrea 
 
 ## Assets in project files
 
-- SFX pack: _not uploaded yet_
+- SFX: project files `sfx/` (Kenney CC0 + generated basics; see `sfx/README.md`)
 - Fonts: _default — Fredoka / Lilita One (free Google Fonts)_
